@@ -208,68 +208,26 @@ input, select {
     border: 1px solid rgba(0,0,0,0.15);
 }
 
-/* ================= MODAL ================= */
+/* ================= TOAST ================= */
 
-.modal {
-    display: none;
+.toast {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.7);
-    z-index: 1001;
-    align-items: center;
-    justify-content: center;
-}
-
-.modal-content {
-    background: white;
-    padding: 32px;
-    border-radius: 28px;
-    max-width: 500px;
-    width: 90%;
-    margin: 20px;
-}
-
-.modal h3 {
-    font-size: 22px;
-    margin-bottom: 20px;
-}
-
-.modal-text {
-    background: #f5f5f5;
-    padding: 20px;
-    border-radius: 16px;
-    margin-bottom: 24px;
-    white-space: pre-line;
-    line-height: 1.6;
-    max-height: 300px;
-    overflow-y: auto;
-}
-
-.modal-buttons {
-    display: flex;
-    gap: 12px;
-    flex-wrap: wrap;
-}
-
-.modal-btn {
-    padding: 14px 26px;
-    border-radius: 999px;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
     background: #000;
-    color: #fff;
-    border: none;
+    color: white;
+    padding: 16px 24px;
+    border-radius: 12px;
     font-size: 16px;
-    cursor: pointer;
-    flex: 1;
-    min-width: 140px;
+    z-index: 1001;
+    transition: transform 0.3s ease;
+    display: none;
 }
 
-.modal-btn.secondary {
-    background: transparent;
-    color: #000;
-    border: 1px solid rgba(0,0,0,0.2);
+.toast.show {
+    transform: translateX(-50%) translateY(0);
+    display: block;
 }
 
 /* ================= MOBILE ================= */
@@ -295,14 +253,6 @@ input, select {
     .btn {
         width: 100%;
         text-align: center;
-    }
-
-    .modal-buttons {
-        flex-direction: column;
-    }
-
-    .modal-btn {
-        width: 100%;
     }
 }
 </style>
@@ -390,24 +340,13 @@ input, select {
             </select>
             <input id="contact" placeholder="Контакт (юзернейм/номер)" required>
 
-            <button class="btn" type="submit">Написать</button>
+            <button class="btn" type="submit" id="submitBtn">Скопировать текст и перейти в Telegram</button>
             <a class="btn secondary" href="https://t.me/GrazSuppBot">Написать по другой теме</a>
         </form>
     </div>
 </section>
 
-<!-- Модальное окно -->
-<div id="messageModal" class="modal">
-    <div class="modal-content">
-        <h3>Скопируйте сообщение и отправьте боту</h3>
-        <div class="modal-text" id="messageText"></div>
-        <div class="modal-buttons">
-            <button class="modal-btn" id="copyBtn">Скопировать текст</button>
-            <a class="modal-btn secondary" id="telegramBtn" href="https://t.me/GrazSuppBot" target="_blank">Перейти в Telegram</a>
-            <button class="modal-btn secondary" id="closeBtn">Закрыть</button>
-        </div>
-    </div>
-</div>
+<div id="toast" class="toast">Текст скопирован! Перейдите в Telegram и вставьте его боту</div>
 
 <script>
 const obs = new IntersectionObserver(e=>{
@@ -415,15 +354,12 @@ const obs = new IntersectionObserver(e=>{
 },{threshold:0.15});
 document.querySelectorAll('.fade').forEach(el=>obs.observe(el));
 
-// Модальное окно элементы
-const modal = document.getElementById('messageModal');
-const messageText = document.getElementById('messageText');
-const copyBtn = document.getElementById('copyBtn');
-const telegramBtn = document.getElementById('telegramBtn');
-const closeBtn = document.getElementById('closeBtn');
+// Элементы
+const toast = document.getElementById('toast');
+const submitBtn = document.getElementById('submitBtn');
 
 // Обработка формы
-applyForm.onsubmit = e => {
+applyForm.onsubmit = async e => {
     e.preventDefault();
     
     // Получаем значения из формы
@@ -441,66 +377,57 @@ applyForm.onsubmit = e => {
 
 Вот мой контакт для связи (${contactType}): ${contact}`;
     
-    // Показываем модальное окно с текстом
-    messageText.textContent = message;
-    modal.style.display = 'flex';
-    
-    // Сохраняем текст в data-атрибут для копирования
-    messageText.dataset.message = message;
-};
-
-// Копирование текста
-copyBtn.onclick = () => {
-    const textToCopy = messageText.dataset.message;
-    
-    navigator.clipboard.writeText(textToCopy)
-        .then(() => {
-            copyBtn.textContent = 'Скопировано!';
-            copyBtn.style.background = '#4CAF50';
-            
-            setTimeout(() => {
-                copyBtn.textContent = 'Скопировать текст';
-                copyBtn.style.background = '#000';
-            }, 2000);
-        })
-        .catch(err => {
-            console.error('Ошибка при копировании: ', err);
-            // Альтернативный способ для старых браузеров
-            const textArea = document.createElement('textarea');
-            textArea.value = textToCopy;
-            document.body.appendChild(textArea);
-            textArea.select();
-            document.execCommand('copy');
-            document.body.removeChild(textArea);
-            
-            copyBtn.textContent = 'Скопировано!';
-            copyBtn.style.background = '#4CAF50';
-            
-            setTimeout(() => {
-                copyBtn.textContent = 'Скопировать текст';
-                copyBtn.style.background = '#000';
-            }, 2000);
-        });
-};
-
-// Закрытие модального окна
-closeBtn.onclick = () => {
-    modal.style.display = 'none';
-};
-
-// Закрытие модального окна при клике вне его
-modal.onclick = (e) => {
-    if (e.target === modal) {
-        modal.style.display = 'none';
+    // Пытаемся скопировать текст в буфер обмена
+    try {
+        await navigator.clipboard.writeText(message);
+        
+        // Показываем уведомление
+        toast.classList.add('show');
+        
+        // Открываем Telegram через 1 секунду
+        setTimeout(() => {
+            // Открываем Telegram бота в новой вкладке
+            window.open('https://t.me/GrazSuppBot', '_blank');
+        }, 1000);
+        
+        // Скрываем уведомление через 4 секунды
+        setTimeout(() => {
+            toast.classList.remove('show');
+        }, 4000);
+        
+    } catch (err) {
+        console.error('Ошибка при копировании: ', err);
+        
+        // Альтернативный способ для старых браузеров
+        const textArea = document.createElement('textarea');
+        textArea.value = message;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+        
+        // Меняем текст кнопки
+        const originalText = submitBtn.textContent;
+        submitBtn.textContent = 'Текст скопирован! Перейдите в Telegram';
+        submitBtn.style.background = '#4CAF50';
+        
+        // Открываем Telegram через 1 секунду
+        setTimeout(() => {
+            window.open('https://t.me/GrazSuppBot', '_blank');
+        }, 1000);
+        
+        // Возвращаем исходный текст через 3 секунды
+        setTimeout(() => {
+            submitBtn.textContent = originalText;
+            submitBtn.style.background = '#000';
+        }, 3000);
     }
 };
 
-// Обновление ссылки Telegram при каждом открытии
-telegramBtn.onclick = () => {
-    const textToSend = messageText.dataset.message;
-    const encodedMessage = encodeURIComponent(textToSend);
-    telegramBtn.href = `https://t.me/GrazSuppBot?start=${encodedMessage}`;
-};
+// Простой вариант для старых браузеров без async/await
+if (!navigator.clipboard) {
+    submitBtn.textContent = 'Сгенерировать текст и перейти в Telegram';
+}
 </script>
 
 </body>
