@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>бэгэбэн team</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background: #fff;
+    color: #000;
+    overflow-x: hidden;
+}
+
+/* ================= HEADER ================= */
+
+header {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100% - 40px);
+    max-width: 1200px;
+    height: 72px;
+    padding: 16px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255,255,255,0.7);
+    backdrop-filter: blur(18px);
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 24px;
+    z-index: 1000;
+}
+
+header img {
+    height: 34px;
+}
+
+/* ================= BASE ================= */
+
+section {
+    padding: 90px 8vw;
+}
+
+h1 {
+    font-size: clamp(44px, 7vw, 96px);
+    font-weight: 700;
+    letter-spacing: -0.04em;
+}
+
+h2 {
+    font-size: clamp(32px, 5vw, 56px);
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    margin-bottom: 32px;
+}
+
+p {
+    font-size: 20px;
+    line-height: 1.7;
+    max-width: 900px;
+}
+
+/* ================= HERO ================= */
+
+.hero {
+    min-height: calc(100vh - 72px);
+    padding-top: 120px;
+    display: flex;
+    align-items: center;
+}
+
+.hero p {
+    margin-top: 20px;
+    opacity: 0.8;
+}
+
+/* ================= ANIMATION ================= */
+
+.fade {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: all .8s ease;
+}
+
+.fade.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ================= ABOUT ================= */
+
+.about {
+    padding-top: 60px;
+}
+
+.about-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 60px;
+    align-items: center;
+}
+
+.about-tag {
+    font-size: 14px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    opacity: 0.5;
+    margin-bottom: 12px;
+}
+
+.about-highlight {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.about img {
+    width: 100%;
+    border-radius: 28px;
+}
+
+/* ================= PROJECTS ================= */
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 32px;
+}
+
+.card {
+    background: rgba(255,255,255,0.65);
+    backdrop-filter: blur(18px);
+    border: 1px solid rgba(0,0,0,0.1);
+    border-radius: 28px;
+    padding: 20px;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.08);
+}
+
+.card img {
+    width: 100%;
+    border-radius: 20px;
+    margin-bottom: 20px;
+}
+
+.card h3 {
+    font-size: 22px;
+    margin-bottom: 8px;
+}
+
+.card p {
+    font-size: 16px;
+    opacity: 0.7;
+    margin-bottom: 20px;
+}
+
+/* ================= BUTTON ================= */
+
+.btn {
+    display: inline-block;
+    padding: 14px 26px;
+    border-radius: 999px;
+    background: #000;
+    color: #fff;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+}
+
+.btn.secondary {
+    background: transparent;
+    color: #000;
+    border: 1px solid rgba(0,0,0,0.2);
+}
+
+/* ================= APPLY ================= */
+
+.apply {
+    position: relative;
+}
+
+.form-wrap {
+    max-width: 560px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+input, select {
+    padding: 16px 18px;
+    font-size: 17px;
+    border-radius: 16px;
+    border: 1px solid rgba(0,0,0,0.15);
+}
+
+/* ================= MOBILE ================= */
+
+@media (max-width: 900px) {
+
+    section {
+        padding: 70px 6vw;
+    }
+
+    h1 {
+        font-size: 42px;
+    }
+
+    p {
+        font-size: 18px;
+    }
+
+    .about-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .btn {
+        width: 100%;
+        text-align: center;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <img src="logo.svg">
+</header>
+
+<section class="hero fade">
+    <div>
+        <h1>бэгэбэн team</h1>
+        <p>Команда, которая создаёт нестандартные проекты для Telegram и поддерживает живые идеи.</p>
+    </div>
+</section>
+
+<section class="about fade">
+    <div class="about-grid">
+        <div>
+            <div class="about-tag">О нас</div>
+            <div class="about-highlight">
+                Мы объединяем тех, кто умеет творить.
+            </div>
+            <p>
+                бэгэбэн team — команда, разрабатывающая интересные проекты,
+                в основном для Telegram. Сейчас мы активно поддерживаем
+                проект CrowMRKT — игровой бот для групп.
+            </p>
+            <div class="about-tag" style="margin-top:28px;">Создатель</div>
+            <p>
+                Маняти Богдан, 14 лет. Python-разработчик.
+                Создал команду, чтобы объединить людей, которые умеют создавать.
+            </p>
+        </div>
+        <img src="creator.jpg">
+    </div>
+</section>
+
+<section class="fade">
+    <h2>Наши проекты</h2>
+    <div class="cards">
+        <div class="card">
+            <img src="crowmrkt.jpg">
+            <h3>CrowMRKT</h3>
+            <p>Игровой телеграм бот</p>
+            <a class="btn" href="crowmrkt.html">Подробнее</a>
+        </div>
+    </div>
+</section>
+
+<section class="fade">
+    <h2>Спонсоры</h2>
+    <div class="cards">
+        <div class="card">
+            <img src="sponsor.jpg">
+            <h3>ЧАТ РАЙ</h3>
+            <p>Сообщество, которое ненавидит здравый смысл</p>
+            <a class="btn" href="https://t.me/Rai_VorotaBot">Зайти</a>
+        </div>
+    </div>
+</section>
+
+<section class="apply fade">
+    <h2>Хочешь в команду?</h2>
+
+    <div class="form-wrap">
+        <form id="applyForm">
+            <input id="name" placeholder="Имя" required>
+            <input id="age" type="number" placeholder="Возраст" required min="1" max="99">
+            <select id="role" required>
+                <option value="" disabled selected>Выберите роль</option>
+                <option>Программист</option>
+                <option>Художник</option>
+                <option>Дизайнер</option>
+                <option>ИИ специалист</option>
+            </select>
+            <input id="exp" type="number" placeholder="Опыт работы (лет)" required min="0" max="99">
+            <select id="contactType" required>
+                <option value="" disabled selected>Выберите способ связи</option>
+                <option>Telegram</option>
+                <option>Телефон</option>
+                <option>WhatsApp</option>
+            </select>
+            <input id="contact" placeholder="Контакт (юзернейм/номер)" required>
+
+            <button class="btn" type="submit">Написать</button>
+            <a class="btn secondary" href="https://t.me/GrazSuppBot">Написать по другой теме</a>
+        </form>
+    </div>
+</section>
+
+<script>
+const obs = new IntersectionObserver(e=>{
+    e.forEach(x=>x.isIntersecting && x.target.classList.add('show'))
+},{threshold:0.15});
+document.querySelectorAll('.fade').forEach(el=>obs.observe(el));
+
+applyForm.onsubmit = e => {
+    e.preventDefault();
+    
+    // Получаем значения из формы
+    const name = document.getElementById('name').value;
+    const age = document.getElementById('age').value;
+    const role = document.getElementById('role').value;
+    const exp = document.getElementById('exp').value;
+    const contactType = document.getElementById('contactType').value;
+    const contact = document.getElementById('contact').value;
+    
+    // Формируем текст сообщения
+    const message = `Здравствуйте, меня зовут ${name}, мне ${age} лет. Я бы хотел рассказать о себе.
+
+Я ${role.toLowerCase()}, занимаюсь своей работой уже ${exp} лет. Готов показать портфолио если нужно.
+
+Вот мой контакт для связи (${contactType}): ${contact}`;
+    
+    // Кодируем сообщение для URL
+    const encodedMessage = encodeURIComponent(message);
+    
+    // Перенаправляем в Telegram бота
+    window.location.href = `https://t.me/GrazSuppBot?start=${encodedMessage}`;
+};
+</script>
+
+</body>
+</html>
