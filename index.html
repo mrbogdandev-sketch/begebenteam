@@ -340,13 +340,13 @@ input, select {
             </select>
             <input id="contact" placeholder="Контакт (юзернейм/номер)" required>
 
-            <button class="btn" type="submit" id="submitBtn">Скопировать текст и перейти в Telegram</button>
+            <button class="btn" type="submit" id="submitBtn">Скопировать текст и перейти в Телеграм</button>
             <a class="btn secondary" href="https://t.me/GrazSuppBot">Написать по другой теме</a>
         </form>
     </div>
 </section>
 
-<div id="toast" class="toast">Текст скопирован! Перейдите в Telegram и вставьте его боту</div>
+<div id="toast" class="toast">Текст скопирован! Переходим в Телеграм...</div>
 
 <script>
 const obs = new IntersectionObserver(e=>{
@@ -372,9 +372,7 @@ applyForm.onsubmit = async e => {
     
     // Формируем текст сообщения
     const message = `Здравствуйте, меня зовут ${name}, мне ${age} лет. Я бы хотел рассказать о себе.
-
 Я ${role.toLowerCase()}, занимаюсь своей работой уже ${exp} лет. Готов показать портфолио если нужно.
-
 Вот мой контакт для связи (${contactType}): ${contact}`;
     
     // Пытаемся скопировать текст в буфер обмена
